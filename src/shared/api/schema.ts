@@ -9,3 +9,7 @@ export const CreateEventSchema = z.object({
 export const JoinEventSchema = z.object({
 	id: z.number().int().positive(),
 })
+
+export const DetachEventSchema = z.object({
+	id: z.number().int().positive(),
+})
