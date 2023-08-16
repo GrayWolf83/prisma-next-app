@@ -8,6 +8,7 @@ type EventCardProps = {
 	description: string | null
 	date: Date
 	action: ReactNode
+	update: ReactNode
 }
 
 export const EventCard = ({
@@ -16,6 +17,7 @@ export const EventCard = ({
 	description,
 	date,
 	action,
+	update,
 }: EventCardProps) => {
 	return (
 		<div className='flex font-sans shadow-xl mb-2'>
@@ -48,6 +50,7 @@ export const EventCard = ({
 								Подробнее
 							</button>
 						</Link>
+						{update}
 					</div>
 				</div>
 			</div>

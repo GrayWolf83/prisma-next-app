@@ -7,13 +7,18 @@ export type CreateEventValues = z.infer<typeof CreateEventSchema>
 
 type CreateEventFormProps = {
 	onSubmit: (data: CreateEventValues) => void
+	initial?: Omit<CreateEventValues, 'description'> & {
+		description?: string | null
+	}
 }
 
-export const CreateEventForm = ({ onSubmit }: CreateEventFormProps) => {
+export const CreateEventForm = ({
+	onSubmit,
+	initial,
+}: CreateEventFormProps) => {
 	const {
 		register,
 		handleSubmit,
-		watch,
 		formState: { errors },
 	} = useForm<CreateEventValues>({ resolver: zodResolver(CreateEventSchema) })
 
@@ -39,6 +44,9 @@ export const CreateEventForm = ({ onSubmit }: CreateEventFormProps) => {
 									<input
 										type='text'
 										id='title'
+										defaultValue={
+											initial ? initial.title : ''
+										}
 										autoComplete='title'
 										className='block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6'
 										{...register('title')}
@@ -61,7 +69,11 @@ export const CreateEventForm = ({ onSubmit }: CreateEventFormProps) => {
 									id='description'
 									rows={3}
 									className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-									defaultValue={''}
+									defaultValue={
+										initial && initial?.description
+											? initial?.description
+											: ''
+									}
 									{...register('description')}
 								/>
 							</div>
@@ -82,6 +94,13 @@ export const CreateEventForm = ({ onSubmit }: CreateEventFormProps) => {
 										type='date'
 										id='date'
 										autoComplete='date'
+										defaultValue={
+											initial
+												? initial?.date
+														?.toISOString()
+														.slice(0, 10)
+												: undefined
+										}
 										className='block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6'
 										{...register('date')}
 									/>

@@ -13,3 +13,10 @@ export const JoinEventSchema = z.object({
 export const DetachEventSchema = z.object({
 	id: z.number().int().positive(),
 })
+
+export const UpdateEventSchema = z.object({
+	title: z.string().min(1),
+	description: z.string().optional(),
+	date: z.coerce.date(),
+	id: z.number().int().positive(),
+})
