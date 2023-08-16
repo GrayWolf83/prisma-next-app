@@ -1,13 +1,27 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import { prisma } from '@/server/db'
-import { useEffect, useState } from 'react'
 import { trpc } from '@/shared/api'
-
-const inter = Inter({ subsets: ['latin'] })
+import { EventCard } from '@/entities/event/ui/card'
+import { JoinEventButton } from '@/features/join-event/ui/button'
 
 export default function Home() {
-	const { data } = trpc.hello.useQuery({ text: 'Name' })
+	const { data, refetch } = trpc.event.findMany.useQuery()
 
-	return <pre>{JSON.stringify(data?.greeting, null, 2)}</pre>
+	return (
+		<ul>
+			{data?.map((event) => (
+				<li key={event.id}>
+					<EventCard
+						{...event}
+						action={
+							!event.isJoined && (
+								<JoinEventButton
+									eventId={event.id}
+									onSuccess={refetch}
+								/>
+							)
+						}
+					/>
+				</li>
+			))}
+		</ul>
+	)
 }
